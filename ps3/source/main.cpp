@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include <cstdio>
+#include <cstring>
 
 using namespace ps3link;
 
@@ -30,7 +31,7 @@ static uint64_t now_us() { return uint64_t(sysGetSystemTime()); }
 static void server_thread(void* /*arg*/) {
     ServerContext ctx;
     char info[128];
-    std::snprintf(info, sizeof info, "{\"server\":\"ps3link\",\"protocol\":%u,\"platform\":\"ps3-ppu\"}",
+    snprintf(info, sizeof info, "{\"server\":\"ps3link\",\"protocol\":%u,\"platform\":\"ps3-ppu\"}",
                   unsigned(kVersion));
     ctx.info_json = info;
     ctx.now_us = now_us;
@@ -52,7 +53,7 @@ static int open_listen_socket(uint16_t port) {
     const int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0) return -1;
     sockaddr_in addr;
-    std::memset(&addr, 0, sizeof addr);
+    memset(&addr, 0, sizeof addr);
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -69,11 +70,11 @@ int main() {
 
     g_listen_fd = open_listen_socket(kDefaultPort);
     if (g_listen_fd < 0) {
-        std::printf("ps3link: no se pudo abrir el puerto %u\n", unsigned(kDefaultPort));
+        printf("ps3link: no se pudo abrir el puerto %u\n", unsigned(kDefaultPort));
         netDeinitialize();
         return 1;
     }
-    std::printf("ps3link: escuchando en el puerto %u\n", unsigned(kDefaultPort));
+    printf("ps3link: escuchando en el puerto %u\n", unsigned(kDefaultPort));
 
     sys_ppu_thread_t tid;
     sysThreadCreate(&tid, server_thread, nullptr, 1000, 256 * 1024, THREAD_JOINABLE,

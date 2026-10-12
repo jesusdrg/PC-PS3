@@ -36,6 +36,14 @@ cd ps3toolchain
 ./toolchain.sh 1 2 4 5 6 8   # sin gdb (3, 7) ni ps3libraries (9) por ahora
 ```
 
+Si falla alguna descarga:
+
+- **GCC SPU no baja GMP/MPFR** (usa FTP): en `build/gcc-9.5.0/contrib/download_prerequisites`
+  cambien `ftp://` por `https://` en `base_url`, borren los `.tar.*` vacíos de esa
+  carpeta, ejecuten el script y repitan `./toolchain.sh 6 8`.
+- **PSL1GHT no baja el tarball:** clónenlo a mano y en esa carpeta ejecuten
+  `make install-ctrl && make && make install`.
+
 En fish:
 
 ```fish
