@@ -1,0 +1,5 @@
+host/build/
+ps3/build/
+ps3/*.elf
+ps3/*.self
+ps3/*.pkg
